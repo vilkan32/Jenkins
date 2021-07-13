@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+ 
+    stages {
+        stage('Restore packages'){
+           steps{
+               sh 'dotnet restore /var/jenkins_home/workspace/ASP-JOB/PCHUBStore.sln'
+            }
+         }
+        stage('Build'){
+           steps{
+               sh 'dotnet build /var/jenkins_home/workspace/ASP-JOB/PCHUBStore.sln -c:Release'
+            }
+         }
+        stage('Test: Unit Test'){
+           steps {
+                sh 'dotnet test /var/jenkins_home/workspace/ASP-JOB/PCHUBStore.Tests -c:Release'
+             }
+          }
+        stage('Publish'){
+             steps{
+               sh 'dotnet publish /var/jenkins_home/workspace/ASP-JOB/PCHUBStore.sln -c:Release'
+             }
+        }
+    }
+}
